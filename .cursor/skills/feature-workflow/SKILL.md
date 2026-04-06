@@ -34,9 +34,9 @@ review bot can run before you fetch feedback.
 ## Phase A — Pick up the ticket
 
 1. **Linear**: set issue **In Progress** (`save_issue` with `state` + `id`).
-2. **Branch (in a worktree)**: from your primary clone, add a linked worktree
-   and branch from latest default branch (see **`git-worktrees`** skill for
-   paths, setup, and env):
+2. **Branch (in a worktree)**: from your primary clone's **repository root**,
+   add a linked worktree and branch from latest default branch (see
+   **`git-worktrees`** skill for paths, setup, and env):
 
    ```bash
    git fetch origin

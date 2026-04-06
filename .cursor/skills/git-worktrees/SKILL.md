@@ -38,7 +38,9 @@ the repo so nothing under that tree can be mistaken for the main worktree.
 
 ## Create a worktree for a feature branch
 
-Run from your **primary** clone (any cwd inside it is fine):
+Run from your **primary** clone's **repository root** so the relative path
+`.worktrees/...` is created next to the root `Makefile` / `package.json`, not
+under some nested folder.
 
 ```bash
 git fetch origin
@@ -126,14 +128,18 @@ only one stack at a time.
 When the branch is merged or the worktree is no longer needed:
 
 1. Stop dev servers and **docker** stacks started from this worktree.
-2. From **any** clone of the repo:
+2. From your **primary** clone: **`cd`** to the **repository root** if you are
+   not already there. If your shell is **inside** the worktree you are removing,
+   move out first—Git refuses to remove the worktree that is your current working
+   directory.
 
    ```bash
+   # From primary clone root (not inside .worktrees/<branch-slug>)
    git worktree remove .worktrees/<branch-slug>
    ```
 
-   Run from the **repository root** (or pass a path relative to it). Use an
-   absolute path only if you are not in the repo root.
+   Paths are relative to the repository root. Use an absolute path only when you
+   are not at the root and need an explicit location.
 
    If Git refuses because of uncommitted changes, either commit/stash or, only
    if you accept losing untracked state, use **`--force`** (destructive).
