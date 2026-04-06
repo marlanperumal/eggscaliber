@@ -43,7 +43,7 @@ class MetadataWorkflowService(Protocol):
     def create_draft_revision(
         self,
         tenant_id: str,
-        dataset_instance_id: str,
+        instance_id: str,
         body: Mapping[str, Any],
     ) -> MetadataRevision:
         """Create a new revision in DRAFT."""

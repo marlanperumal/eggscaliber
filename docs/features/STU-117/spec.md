@@ -89,7 +89,7 @@ metadata versioning rules.
 ## Observability Plan
 
 - `logging` events on create, preview, publish, and discard with structured
-  `extra` fields: `revision_id`, `tenant_id`, `state` (and instance id on create).
+  `extra` fields: `revision_id`, `tenant_id`, `instance_id`, `state` on create.
 
 ## Test Strategy
 
@@ -102,3 +102,4 @@ metadata versioning rules.
 | ---------- | ------------------------------ | ------------------------------- |
 | 2026-04-06 | Initial architecture slice   | STU-117 scope baseline          |
 | 2026-04-06 | PR review hardening (deep copy, gate `details`, unified not-found) | PR #2 |
+| 2026-04-06 | `MetadataRevision.dataset_instance_id` renamed to `instance_id` (Gemini) | PR #2 |

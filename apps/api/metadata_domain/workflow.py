@@ -34,14 +34,14 @@ class InMemoryMetadataWorkflowService:
     def create_draft_revision(
         self,
         tenant_id: str,
-        dataset_instance_id: str,
+        instance_id: str,
         body: Mapping[str, Any],
     ) -> MetadataRevision:
         revision_id = str(uuid.uuid4())
         rev = MetadataRevision(
             revision_id=revision_id,
             tenant_id=tenant_id,
-            dataset_instance_id=dataset_instance_id,
+            instance_id=instance_id,
             state=MetadataLifecycleState.DRAFT,
             body=copy.deepcopy(dict(body)),
         )
@@ -51,7 +51,7 @@ class InMemoryMetadataWorkflowService:
             extra={
                 "revision_id": revision_id,
                 "tenant_id": tenant_id,
-                "dataset_instance_id": dataset_instance_id,
+                "instance_id": instance_id,
                 "state": rev.state,
             },
         )

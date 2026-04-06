@@ -61,7 +61,7 @@ class MetadataRevision(BaseModel):
 
     revision_id: str
     tenant_id: str
-    dataset_instance_id: str
+    instance_id: str
     state: MetadataLifecycleState
     body: Mapping[str, Any] = Field(default_factory=dict)
 
