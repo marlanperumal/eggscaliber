@@ -104,3 +104,4 @@ metadata versioning rules.
 | 2026-04-06 | PR review hardening (deep copy, gate `details`, unified not-found) | PR #2 |
 | 2026-04-06 | `MetadataRevision.dataset_instance_id` renamed to `instance_id` (Gemini) | PR #2 |
 | 2026-04-06 | Workflow returns deep-isolated revisions; `get_revision` on protocol | PR #2 |
+| 2026-04-06 | Removed unused `TenantIsolationError`; ID fields `min_length=1` on models | PR #2 |

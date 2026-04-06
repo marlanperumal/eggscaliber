@@ -1,12 +1,8 @@
-"""Domain errors for metadata lifecycle and tenant isolation."""
+"""Domain errors for metadata lifecycle and lookup failures."""
 
 
 class MetadataDomainError(Exception):
     """Base class for metadata domain failures."""
-
-
-class TenantIsolationError(MetadataDomainError):
-    """Raised when a caller references a resource outside its tenant scope."""
 
 
 class MetadataWorkflowError(MetadataDomainError):

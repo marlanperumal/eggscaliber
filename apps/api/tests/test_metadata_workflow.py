@@ -3,11 +3,13 @@
 from typing import Any, cast
 
 import pytest
+from pydantic import ValidationError
 
 from apps.api.metadata_domain import (
     InMemoryMetadataWorkflowService,
     MetadataLifecycleState,
     MetadataNotFoundError,
+    MetadataRevision,
     MetadataWorkflowError,
     PreviewGateReport,
 )
@@ -107,6 +109,16 @@ def test_get_revision_returns_snapshot_matching_create() -> None:
     loaded = svc.get_revision("t1", created.revision_id)
     assert loaded == created
     assert loaded is not created
+
+
+def test_metadata_revision_rejects_empty_revision_id() -> None:
+    with pytest.raises(ValidationError):
+        MetadataRevision(
+            revision_id="",
+            tenant_id="t1",
+            instance_id="i1",
+            state=MetadataLifecycleState.DRAFT,
+        )
 
 
 def test_mutating_returned_revision_body_does_not_change_stored_revision() -> None:

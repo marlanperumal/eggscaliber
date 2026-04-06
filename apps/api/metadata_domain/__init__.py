@@ -4,7 +4,6 @@ from apps.api.metadata_domain.errors import (
     MetadataDomainError,
     MetadataNotFoundError,
     MetadataWorkflowError,
-    TenantIsolationError,
 )
 from apps.api.metadata_domain.models import (
     DatasetDefinition,
@@ -39,5 +38,4 @@ __all__ = [
     "MetadataWorkflowError",
     "MetadataWorkflowService",
     "PreviewGateReport",
-    "TenantIsolationError",
 ]

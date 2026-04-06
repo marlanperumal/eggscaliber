@@ -29,8 +29,8 @@ class DatasetDefinition(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    definition_id: str
-    tenant_id: str
+    definition_id: str = Field(min_length=1)
+    tenant_id: str = Field(min_length=1)
     name: str = Field(min_length=1)
 
 
@@ -39,9 +39,9 @@ class DatasetInstance(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    instance_id: str
-    tenant_id: str
-    definition_id: str
+    instance_id: str = Field(min_length=1)
+    tenant_id: str = Field(min_length=1)
+    definition_id: str = Field(min_length=1)
 
 
 class IngestionSourceDescriptor(BaseModel):
@@ -49,7 +49,7 @@ class IngestionSourceDescriptor(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    tenant_id: str
+    tenant_id: str = Field(min_length=1)
     kind: IngestionSourceKind
     ref: str = Field(min_length=1, description="Opaque connector-specific locator.")
 
@@ -59,9 +59,9 @@ class MetadataRevision(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    revision_id: str
-    tenant_id: str
-    instance_id: str
+    revision_id: str = Field(min_length=1)
+    tenant_id: str = Field(min_length=1)
+    instance_id: str = Field(min_length=1)
     state: MetadataLifecycleState
     body: Mapping[str, Any] = Field(default_factory=dict)
 
