@@ -1,0 +1,25 @@
+---
+description: Ticket-linked delivery through PR and automated review (Linear, GitHub, Gemini)
+alwaysApply: true
+---
+
+# Feature Delivery Workflow
+
+When **implementing** or **closing out** work tied to a Linear issue—especially
+after **opening or updating a PR** or **handling review-bot feedback**—read and
+follow the full playbook in:
+
+`.cursor/skills/feature-workflow/SKILL.md`
+
+That skill is authoritative for: verification command order, push/PR `gh`
+usage, **5-minute waits** after PR creation and after each `@gemini review`,
+fetching and resolving review threads, and **capping** automated re-review loops
+with human escalation.
+
+Feature branches are expected in a **git worktree** (not only a branch switch in
+the main checkout). Follow `.cursor/skills/git-worktrees/SKILL.md` for layout,
+`make setup`, environment/ports, and cleanup.
+
+Do not skip the waits when expecting Gemini Code Assist; poll only after the
+wait. Default PR base branch for this repository is **`master`** unless the
+default branch was renamed (confirm with `gh repo view`).
