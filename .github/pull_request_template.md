@@ -35,3 +35,5 @@
 - [ ] Stage gate updated in Linear
 - [ ] Exceptions logged if used
 - [ ] No `master` update/merge without explicit user permission
+- [ ] PR readiness gate completed (`docs/playbooks/pr-readiness.md`)
+- [ ] Internal reviewer-agent pass completed and required issues addressed

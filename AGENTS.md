@@ -117,6 +117,8 @@ Each PR must include:
 - As-built reconciliation note (code aligned to docs, or docs updated in-place with addendum).
 - Completed PR checklist from `docs/templates/pr-checklist-template.md`.
 - Branch rebased on latest `master` before merge unless explicitly waived.
+- PR readiness gate completed per `docs/playbooks/pr-readiness.md`.
+- Internal reviewer-agent pass completed before push, with required findings addressed.
 
 ## Pattern And Testing Governance
 

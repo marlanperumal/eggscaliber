@@ -25,6 +25,13 @@ repos:
         pass_filenames: false
         stages: [pre-push]
 
+      - id: mypy-check
+        name: mypy (apps/api)
+        entry: uv run --project apps/api mypy apps/api
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+
       - id: pnpm-check
         name: pnpm js checks (workspace)
         entry: bash -c 'pnpm lint && pnpm test'

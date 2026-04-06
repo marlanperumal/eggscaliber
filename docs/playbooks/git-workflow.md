@@ -24,6 +24,7 @@ Examples:
 7. Merge using squash merge (default).
 8. Delete feature branch after merge.
 9. Do not merge or update `master` without explicit user permission.
+10. Complete PR readiness gate in `docs/playbooks/pr-readiness.md` before requesting review.
 
 ## Merge Strategy
 

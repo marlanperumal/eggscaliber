@@ -34,3 +34,5 @@ Use this checklist in every pull request.
 - [ ] Stage gate status updated in Linear
 - [ ] Exceptions (if any) logged and referenced
 - [ ] No `master` update/merge without explicit user permission
+- [ ] PR readiness gate completed (`docs/playbooks/pr-readiness.md`)
+- [ ] Internal reviewer-agent pass completed and required issues addressed

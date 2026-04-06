@@ -34,7 +34,7 @@ docker-validate:
 
 check: lint test
 
-verify: check hooks-run-push docker-validate
+verify: hooks-run-push docker-validate
 
 hooks-install:
 	uvx pre-commit install --hook-type pre-commit --hook-type pre-push
