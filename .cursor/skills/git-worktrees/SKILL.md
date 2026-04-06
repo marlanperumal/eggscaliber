@@ -49,11 +49,12 @@ git fetch origin
 **New branch** (typical for a ticket):
 
 ```bash
-git worktree add .worktrees/<TICKET>-short-name -b <TICKET>-short-name origin/master
+git worktree add .worktrees/<TICKET>-short-name -b <TICKET>-short-name origin/<base>
 ```
 
-Use the same branch naming as the feature workflow (e.g. `STU-117-architecture-slice`).
-Confirm default base with `gh repo view --json defaultBranchRef` if unsure.
+Replace **`<base>`** with your default branch name (often `master`). Use the same
+branch naming as the feature workflow (e.g. `STU-117-architecture-slice`).
+Confirm with `gh repo view --json defaultBranchRef` if unsure.
 
 **Existing branch** (branch already exists locally):
 

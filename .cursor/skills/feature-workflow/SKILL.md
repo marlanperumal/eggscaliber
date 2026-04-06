@@ -40,14 +40,14 @@ review bot can run before you fetch feedback.
 
    ```bash
    git fetch origin
-   git worktree add .worktrees/<TICKET>-short-name -b <TICKET>-short-name origin/master
+   git worktree add .worktrees/<TICKET>-short-name -b <TICKET>-short-name origin/<base>
    cd .worktrees/<TICKET>-short-name
    make setup
    ```
 
-   Use the ticket prefix from Linear (e.g. `STU-117-architecture-slice`).
-   Confirm the default base branch name if it is not `master`
-   (`gh repo view --json defaultBranchRef`). If the branch already exists
+   Replace **`<base>`** with your default branch name (often `master`); confirm
+   with `gh repo view --json defaultBranchRef`. Use the ticket prefix from Linear
+   (e.g. `STU-117-architecture-slice`). If the branch already exists
    locally, use `git worktree add .worktrees/<TICKET>-short-name <TICKET>-short-name`
    instead.
 
@@ -121,7 +121,7 @@ Review** when the PR is open.
              id
              isResolved
              comments(first: 5) {
-               nodes { fullDatabaseId author { login } body path line }
+               nodes { databaseId author { login } body path line }
              }
            }
          }
@@ -130,10 +130,11 @@ Review** when the PR is open.
    }'
    ```
 
-   Use each comment’s **`fullDatabaseId`** (numeric string from GraphQL) as the
-   REST **`in_reply_to`** target when posting a reply. GitHub’s GraphQL type is
-   **`PullRequestReviewComment`**; it exposes **`line`** and **`fullDatabaseId`**
-   (not `databaseId`).
+   Use each comment’s **`databaseId`** (integer from GraphQL) as the REST
+   **`in_reply_to`** target when posting a reply. The GraphQL **`id`** field is the
+   global node id (opaque string); **`databaseId`** is the numeric id the REST
+   API expects for replies. The type **`PullRequestReviewComment`** also exposes
+   **`line`** for the commented line.
 
 3. **Also** list top-level PR comments if needed:
    `gh pr view PR_NUMBER --json comments,reviews`
@@ -147,8 +148,8 @@ Review** when the PR is open.
    JSON
    ```
 
-   Replace the numeric id with the parent comment’s **`fullDatabaseId`** from step
-   2 (no quotes around the number in JSON).
+   Replace the number with the parent comment’s **`databaseId`** from step 2 (no
+   quotes around the number in JSON).
 
 5. **Resolve** threads (GraphQL), using the thread **`id`** from step 2 (e.g.
    `PRRT_…`). Prefer a single JSON body so variables are not stripped by the
@@ -204,7 +205,7 @@ If the bot username differs, filter threads by `author.login` (e.g.
 
 | Step | Command |
 | ---- | ------- |
-| New worktree + branch | `git worktree add .worktrees/<b> -b <b> origin/master` then `cd .worktrees/<b>` |
+| New worktree + branch | `git worktree add .worktrees/<b> -b <b> origin/<base>` then `cd .worktrees/<b>` |
 | Worktree setup | `make setup` (from worktree root) |
 | Full verify | `make check` |
 | Feature docs gate | `bash scripts/check_feature_docs.sh` |
