@@ -16,6 +16,10 @@ usage, **5-minute waits** after PR creation and after each `@gemini review`,
 fetching and resolving review threads, and **capping** automated re-review loops
 with human escalation.
 
+**Bot and inline suggestions** are not automatic edits: **critically analyze**
+each proposed change before implementing (see
+`.cursor/rules/pr-review-critical-analysis.mdc`).
+
 Feature branches are expected in a **git worktree** (not only a branch switch in
 the main checkout). Follow `.cursor/skills/git-worktrees/SKILL.md` for layout,
 `make setup`, environment/ports, and cleanup.

@@ -67,6 +67,10 @@ PR review bots**, and **Linear** status/comments, agents must read and execute
 GitHub CLI and GraphQL steps, **mandatory 5-minute waits** before polling bot
 feedback, `@gemini review` re-review loops, and escalation when loops cap out.
 
+**PR bot feedback:** treat each automated suggestion as a hypothesis—verify
+claims, weigh tradeoffs, and reply with reasoning when a suggestion is wrong or
+incomplete; see `.cursor/rules/pr-review-critical-analysis.mdc`.
+
 ## Agent Team Topology
 
 - Discovery Cell: clarifies requirements, constraints, and acceptance tests.

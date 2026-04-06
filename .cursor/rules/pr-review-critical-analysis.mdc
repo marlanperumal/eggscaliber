@@ -1,0 +1,33 @@
+---
+description: Critically evaluate PR review bot and inline feedback before changing code or docs
+alwaysApply: true
+---
+
+# PR And Automated Review Comments
+
+Treat each suggestion from **GitHub PR review bots** (e.g. Gemini Code Assist),
+**inline review threads**, and similar **automated feedback** as a **hypothesis**,
+not an automatic to-do.
+
+Before changing code or documentation:
+
+1. **Restate the claim** — What exactly is asserted (API shape, CLI behavior,
+   security, style)?
+2. **Check evidence** — When the comment is factual, verify with `gh`, GraphQL,
+   git, tests, or the relevant code path; read surrounding context so you do
+   not override intentional design.
+3. **Weigh tradeoffs** — e.g. placeholders vs concrete commands, verbosity vs
+   copy-paste safety, alignment with repo rules and skills.
+4. **Decide explicitly** — Implement, implement partially, or **decline**; if the
+   review is wrong or only partly right, **reply on the thread** with reasoning
+   (and evidence when useful) instead of only matching the suggestion to clear
+   threads.
+
+Do **not** replace APIs, fields, or command examples solely to satisfy a bot when
+verification shows the original was correct or the suggestion is worse for
+maintainability. Prefer accurate docs and working automation over unexamined
+agreement.
+
+This complements `.cursor/skills/feature-workflow/SKILL.md` (waits, replies,
+resolves); it does **not** relax tenant safety, spec conformance, or verification
+requirements.

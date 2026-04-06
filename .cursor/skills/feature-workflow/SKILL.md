@@ -106,6 +106,12 @@ Review** when the PR is open.
 
 ## Phase D — First bot pass (mandatory wait)
 
+Before changing code or docs for a thread, **critically analyze** the suggestion
+(per `.cursor/rules/pr-review-critical-analysis.mdc`): restate the claim, verify
+factual assertions (`gh`, GraphQL, tests, code), weigh tradeoffs, then implement,
+partially implement, or **reply on the thread** with reasoning (and evidence)
+when declining or correcting a bot mistake.
+
 1. **Wait 5 minutes** before querying review feedback (bot latency):
    - Shell: `sleep 300` with `block_until_ms` ≥ 310000, **or**
    - `Await` with `block_until_ms: 300000`.
