@@ -18,3 +18,4 @@ Track project skills and their lifecycle.
 | metadata-ingestion-design | approved | data | Guard metadata compatibility |
 | grounded-ai-eval | approved | ai | Validate grounding and provenance |
 | release-readiness | approved | platform | Verify pilot release readiness |
+| feature-workflow | trial | platform | Linear + PR + Gemini review loop with timed waits |
