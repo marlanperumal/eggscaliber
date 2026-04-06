@@ -24,14 +24,14 @@ jobs:
       - name: Install JS dependencies
         run: pnpm install --frozen-lockfile=false
 
-      - name: Run JS checks
-        run: pnpm check
-
       - name: Setup uv
         uses: astral-sh/setup-uv@v5
 
       - name: Sync API dependencies
         run: uv sync --project apps/api
+
+      - name: Run JS checks
+        run: pnpm check
 
       - name: Run pre-commit checks
         run: uvx pre-commit run --all-files --show-diff-on-failure
