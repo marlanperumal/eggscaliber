@@ -17,6 +17,7 @@ web:
 lint:
 	pnpm lint
 	uv run --project apps/api ruff check apps/api
+	uv run --project apps/api mypy apps/api
 
 test:
 	pnpm test

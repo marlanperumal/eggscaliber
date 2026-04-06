@@ -26,8 +26,8 @@ repos:
         stages: [pre-push]
 
       - id: pnpm-check
-        name: pnpm check (workspace)
-        entry: pnpm check
+        name: pnpm js checks (workspace)
+        entry: bash -c 'pnpm lint && pnpm test'
         language: system
         pass_filenames: false
         stages: [pre-push]
