@@ -1,0 +1,14 @@
+---
+description: Spec and documentation traceability requirements
+alwaysApply: true
+---
+
+# Spec And Docs
+
+- Link work items to roadmap, spec, and implementation artifacts.
+- Every feature/bug ticket must include repo-linked spec, design, and validation docs.
+- Keep spec and design docs updated in-place during implementation changes.
+- Add a bottom addendum entry whenever original intent is changed, with reason.
+- Update engineering patterns and testing docs when conventions evolve.
+- Record architecture-impacting decisions in ADRs.
+- Keep docs concise, current, and tied to shipped behavior.

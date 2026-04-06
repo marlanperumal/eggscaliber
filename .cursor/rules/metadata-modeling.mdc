@@ -1,0 +1,12 @@
+---
+description: Metadata modeling and ingestion draft publish constraints
+alwaysApply: true
+---
+
+# Metadata Modeling
+
+- Treat metadata as a versioned product surface, not a side effect.
+- Keep `DatasetDefinition` stable across `DatasetInstance` periods.
+- Apply edits through draft -> preview -> publish workflows.
+- Do not silently change field identities or level mappings.
+- Require explicit migration policy when data types change.

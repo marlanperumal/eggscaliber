@@ -1,0 +1,18 @@
+[project]
+name = "eggscaliber-api"
+version = "0.1.0"
+description = "Eggscaliber FastAPI backend"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi",
+  "uvicorn[standard]",
+  "pydantic"
+]
+
+[dependency-groups]
+dev = [
+  "httpx",
+  "pytest",
+  "ruff",
+  "mypy"
+]

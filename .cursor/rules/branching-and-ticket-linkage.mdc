@@ -1,0 +1,11 @@
+---
+description: Feature branch and ticket linkage policy
+alwaysApply: true
+---
+
+# Branching And Ticket Linkage
+
+- Start each feature or bugfix on a new branch linked to a Linear issue.
+- Use branch naming with ticket prefix (for example `ENG-123-feature-name`).
+- Include the ticket link in PRs and implementation summaries.
+- Never update or merge `master` without explicit user permission.

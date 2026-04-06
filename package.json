@@ -1,0 +1,20 @@
+{
+  "name": "eggscaliber",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Eggscaliber monorepo root",
+  "packageManager": "pnpm@10.0.0",
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "dev:api": "uv run --project apps/api uvicorn apps.api.main:app --reload --host 0.0.0.0 --port 8000",
+    "dev:web": "pnpm --filter @eggscaliber/web dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "format": "pnpm -r format",
+    "storybook": "pnpm --filter @eggscaliber/web storybook",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "check": "pnpm lint && pnpm test"
+  }
+}
