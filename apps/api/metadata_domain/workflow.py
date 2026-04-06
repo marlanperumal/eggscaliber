@@ -35,8 +35,9 @@ class InMemoryMetadataWorkflowService:
 
     A ``threading.Lock`` serializes access to ``_revisions`` so read-modify-write
     transitions are atomic under concurrent callers (e.g. multi-threaded local
-    servers). Production adapters typically rely on storage-level consistency
-    instead.
+    servers). Return values are deep-copied *after* releasing the lock so large
+    bodies do not extend critical-section time. Production adapters typically
+    rely on storage-level consistency instead.
     """
 
     def __init__(self) -> None:
@@ -68,7 +69,7 @@ class InMemoryMetadataWorkflowService:
                     "state": rev.state,
                 },
             )
-            return _isolated_revision(rev)
+        return _isolated_revision(rev)
 
     def get_revision(self, tenant_id: str, revision_id: str) -> MetadataRevision:
         """Return a tenant-scoped revision snapshot (deep-copied)."""
@@ -107,7 +108,7 @@ class InMemoryMetadataWorkflowService:
                     "state": updated.state,
                 },
             )
-            return _isolated_revision(updated)
+        return _isolated_revision(updated)
 
     def publish(self, tenant_id: str, revision_id: str) -> MetadataRevision:
         with self._lock:
@@ -128,7 +129,7 @@ class InMemoryMetadataWorkflowService:
                     "state": updated.state,
                 },
             )
-            return _isolated_revision(updated)
+        return _isolated_revision(updated)
 
     def discard_preview(self, tenant_id: str, revision_id: str) -> MetadataRevision:
         with self._lock:
@@ -151,7 +152,7 @@ class InMemoryMetadataWorkflowService:
                     "state": updated.state,
                 },
             )
-            return _isolated_revision(updated)
+        return _isolated_revision(updated)
 
     def _get_revision_locked(
         self, tenant_id: str, revision_id: str
