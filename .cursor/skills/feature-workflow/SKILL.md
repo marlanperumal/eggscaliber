@@ -121,7 +121,7 @@ Review** when the PR is open.
              id
              isResolved
              comments(first: 5) {
-               nodes { databaseId author { login } body path }
+               nodes { fullDatabaseId author { login } body path line }
              }
            }
          }
@@ -130,20 +130,34 @@ Review** when the PR is open.
    }'
    ```
 
+   Use each comment’s **`fullDatabaseId`** (numeric string from GraphQL) as the
+   REST **`in_reply_to`** target when posting a reply. GitHub’s GraphQL type is
+   **`PullRequestReviewComment`**; it exposes **`line`** and **`fullDatabaseId`**
+   (not `databaseId`).
+
 3. **Also** list top-level PR comments if needed:
    `gh pr view PR_NUMBER --json comments,reviews`
 4. For each thread: implement fixes, **reply in-thread** (REST):
 
    ```bash
-   gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments -f body='…' -F in_reply_to=DATABASE_ID
+   gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments \
+     -f body='…' \
+     -f in_reply_to=FULLDATABASEID
    ```
 
-5. **Resolve** threads (GraphQL):
+   Use **`-f`** for `in_reply_to` so `gh` sends a usable value for the numeric
+   comment id.
 
-   ```text
-   mutation {
-     resolveReviewThread(input: {threadId: "PRRT_…"}) { thread { isResolved } }
-   }
+5. **Resolve** threads (GraphQL), using the thread **`id`** from step 2 (e.g.
+   `PRRT_…`):
+
+   ```bash
+   gh api graphql -f query='
+   mutation($threadId: ID!) {
+     resolveReviewThread(input: { threadId: $threadId }) {
+       thread { isResolved }
+     }
+   }' -f variables='{"threadId":"PRRT_…"}'
    ```
 
 6. **Push** follow-up commits on the same branch.
@@ -195,8 +209,8 @@ If the bot username differs, filter threads by `author.login` (e.g.
 | PR create | `gh pr create --base master --head <branch> …` |
 | Wait 5 min | `sleep 300` |
 | PR threads | `gh api graphql` (query above) |
-| Reply inline | `gh api repos/OWNER/REPO/pulls/<PR>/comments` + `in_reply_to` |
-| Resolve thread | `gh api graphql` mutation `resolveReviewThread` |
+| Reply inline | `gh api repos/OWNER/REPO/pulls/<PR>/comments -f body='…' -f in_reply_to=<id>` |
+| Resolve thread | `gh api graphql -f query='mutation($i:ID!){resolveReviewThread(input:{threadId:$i}){thread{isResolved}}}' -f variables='{"i":"PRRT_…"}'` |
 | Ping Gemini | `gh pr comment <n> --body "@gemini review"` |
 
 ## What not to do

@@ -129,8 +129,11 @@ When the branch is merged or the worktree is no longer needed:
 2. From **any** clone of the repo:
 
    ```bash
-   git worktree remove /absolute/or/relative/path/to/.worktrees/<branch-slug>
+   git worktree remove .worktrees/<branch-slug>
    ```
+
+   Run from the **repository root** (or pass a path relative to it). Use an
+   absolute path only if you are not in the repo root.
 
    If Git refuses because of uncommitted changes, either commit/stash or, only
    if you accept losing untracked state, use **`--force`** (destructive).
