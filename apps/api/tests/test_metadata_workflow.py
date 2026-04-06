@@ -1,5 +1,7 @@
 """Tests for metadata lifecycle workflow and tenant isolation."""
 
+from typing import Any, cast
+
 import pytest
 
 from apps.api.metadata_domain import (
@@ -97,3 +99,25 @@ def test_create_draft_deep_copies_nested_body() -> None:
     draft = svc.create_draft_revision("t1", "i1", {"fields": nested})
     nested[0]["name"] = "mutated"
     assert draft.body["fields"][0]["name"] == "a"
+
+
+def test_get_revision_returns_snapshot_matching_create() -> None:
+    svc = InMemoryMetadataWorkflowService()
+    created = svc.create_draft_revision("t1", "i1", {"x": 1})
+    loaded = svc.get_revision("t1", created.revision_id)
+    assert loaded == created
+    assert loaded is not created
+
+
+def test_mutating_returned_revision_body_does_not_change_stored_revision() -> None:
+    svc = InMemoryMetadataWorkflowService()
+    returned = svc.create_draft_revision(
+        "t1",
+        "i1",
+        {"items": [{"n": 1}]},
+    )
+    rid = returned.revision_id
+    body = cast(dict[str, Any], returned.body)
+    body["items"][0]["n"] = 999
+    again = svc.get_revision("t1", rid)
+    assert cast(dict[str, Any], again.body)["items"][0]["n"] == 1

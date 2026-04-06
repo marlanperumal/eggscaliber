@@ -73,7 +73,9 @@ Use this template for each pattern:
   when intentionally shipping a stub for a known next slice.
 - Allowed exceptions: Spikes and time-boxed branches (document discard or
   merge outcome in the ticket); regulated or contractual interfaces frozen by
-  policy.
+  policy; **architecture slice** tickets whose explicit deliverable is port
+  definitions for named follow-up work (link parent epic and implementing
+  tickets in the spec addendum).
 
 ## Change Management
 

@@ -20,6 +20,11 @@ from apps.api.metadata_domain.models import (
 logger = logging.getLogger(__name__)
 
 
+def _isolated_revision(rev: MetadataRevision) -> MetadataRevision:
+    """Return a deep copy so callers cannot mutate service-internal state."""
+    return rev.model_copy(deep=True)
+
+
 class InMemoryMetadataWorkflowService:
     """
     In-memory implementation of MetadataWorkflowService for tests and local dev.
@@ -55,7 +60,12 @@ class InMemoryMetadataWorkflowService:
                 "state": rev.state,
             },
         )
-        return rev
+        return _isolated_revision(rev)
+
+    def get_revision(self, tenant_id: str, revision_id: str) -> MetadataRevision:
+        """Return a tenant-scoped revision snapshot (deep-copied)."""
+        rev = self._get_revision(tenant_id, revision_id)
+        return _isolated_revision(rev)
 
     def submit_for_preview(
         self,
@@ -76,6 +86,7 @@ class InMemoryMetadataWorkflowService:
 
         updated = rev.model_copy(
             update={"state": MetadataLifecycleState.PREVIEW},
+            deep=True,
         )
         self._revisions[revision_id] = updated
         logger.info(
@@ -86,7 +97,7 @@ class InMemoryMetadataWorkflowService:
                 "state": updated.state,
             },
         )
-        return updated
+        return _isolated_revision(updated)
 
     def publish(self, tenant_id: str, revision_id: str) -> MetadataRevision:
         rev = self._get_revision(tenant_id, revision_id)
@@ -95,6 +106,7 @@ class InMemoryMetadataWorkflowService:
 
         updated = rev.model_copy(
             update={"state": MetadataLifecycleState.PUBLISHED},
+            deep=True,
         )
         self._revisions[revision_id] = updated
         logger.info(
@@ -105,7 +117,7 @@ class InMemoryMetadataWorkflowService:
                 "state": updated.state,
             },
         )
-        return updated
+        return _isolated_revision(updated)
 
     def discard_preview(self, tenant_id: str, revision_id: str) -> MetadataRevision:
         rev = self._get_revision(tenant_id, revision_id)
@@ -116,6 +128,7 @@ class InMemoryMetadataWorkflowService:
 
         updated = rev.model_copy(
             update={"state": MetadataLifecycleState.DRAFT},
+            deep=True,
         )
         self._revisions[revision_id] = updated
         logger.info(
@@ -126,7 +139,7 @@ class InMemoryMetadataWorkflowService:
                 "state": updated.state,
             },
         )
-        return updated
+        return _isolated_revision(updated)
 
     def _get_revision(self, tenant_id: str, revision_id: str) -> MetadataRevision:
         rev = self._revisions.get(revision_id)

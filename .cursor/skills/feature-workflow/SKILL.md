@@ -171,7 +171,7 @@ If the bot username differs, filter threads by `author.login` (e.g.
 | PR create | `gh pr create --base master --head <branch> …` |
 | Wait 5 min | `sleep 300` |
 | PR threads | `gh api graphql` (query above) |
-| Reply inline | `gh api repos/OWNER/REPO/pulls/comments` + `in_reply_to` |
+| Reply inline | `gh api repos/OWNER/REPO/pulls/<PR>/comments` + `in_reply_to` |
 | Resolve thread | `gh api graphql` mutation `resolveReviewThread` |
 | Ping Gemini | `gh pr comment <n> --body "@gemini review"` |
 

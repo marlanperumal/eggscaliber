@@ -103,3 +103,4 @@ metadata versioning rules.
 | 2026-04-06 | Initial architecture slice   | STU-117 scope baseline          |
 | 2026-04-06 | PR review hardening (deep copy, gate `details`, unified not-found) | PR #2 |
 | 2026-04-06 | `MetadataRevision.dataset_instance_id` renamed to `instance_id` (Gemini) | PR #2 |
+| 2026-04-06 | Workflow returns deep-isolated revisions; `get_revision` on protocol | PR #2 |

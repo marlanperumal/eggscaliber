@@ -48,6 +48,9 @@ class MetadataWorkflowService(Protocol):
     ) -> MetadataRevision:
         """Create a new revision in DRAFT."""
 
+    def get_revision(self, tenant_id: str, revision_id: str) -> MetadataRevision:
+        """Load a revision for read/validation; implementations return an isolated snapshot."""
+
     def submit_for_preview(
         self,
         tenant_id: str,
