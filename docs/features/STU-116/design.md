@@ -26,8 +26,11 @@ free-form document.
    `DatasetInstance` the revision belongs to; always show **tenant context**
    (name or id per product policy) so pilots never edit the wrong workspace.
 3. **Draft editor** — revision in `draft`: tabular or grouped list of metadata
-   entries backed by opaque `body`; supports **batch selection** and **bulk
-   apply** (e.g. label pattern) at the pattern level.
+   entries backed by opaque `body`; supports **multi-row selection** and **bulk
+   edits** on the current selection (e.g. set the same label prefix on every
+   selected field, or apply one value down a visible column). Scope is
+   “whatever is selected in the grid,” not a separate abstract “pattern layer,”
+   unless STU-122 adds grouping or regex-based rules.
 4. **Preview request** — explicit CTA to run validation; show spinner / job
    state if preview is asynchronous in STU-122.
 5. **Preview summary** — when `preview`: read-only snapshot with **gate outcome**
@@ -52,7 +55,7 @@ stateDiagram-v2
 | Domain state | Pilot-visible label (suggested) | Primary actions |
 | ------------ | ------------------------------- | ---------------- |
 | `draft`      | Draft                           | Edit, Run preview |
-| `preview`    | Ready to publish                | Publish, Discard preview, View diff/summary |
+| `preview`    | Ready to publish                | Publish, Discard preview, Review preview summary |
 | `published`  | Published                       | View only; “New draft” for same instance |
 
 Illegal transitions should surface **inline errors** tied to the action (e.g.
@@ -105,8 +108,11 @@ Illegal transitions should surface **inline errors** tied to the action (e.g.
 - **Preview summary** should call out **compatibility** or **policy** issues in
   plain language; tie lists of messages to actionable rows where possible (build
   maps messages to fields in STU-122 when metadata supports it).
-- **Published** state: short **“what was published”** recap (timestamp,
-  actor if available) to support audit mindset.
+- **Published** state: short **“what was published”** recap when the stack can
+  supply it (e.g. publish time, initiating user). STU-117’s `MetadataRevision`
+  does not yet carry audit fields; STU-122 should persist or join **provenance**
+  (revision extension, audit log, or events) before the UI promises timestamps
+  or actors.
 
 ## Accessibility and usability
 
@@ -121,9 +127,15 @@ Illegal transitions should surface **inline errors** tied to the action (e.g.
 - Autosave vs explicit save; optimistic UI rules.
 - Whether preview runs sync or async; progress UI.
 - Exact mapping from opaque `body` keys to column labels.
+- **Preview “diff”**: `InMemoryMetadataWorkflowService` has no revision diff;
+  with an opaque `body`, define whether pilots see a structural diff, a
+  gate-only summary, or both—and where computation lives (service vs UI).
+- **Publish provenance**: actor/timestamp (or equivalent) for the published
+  recap; may require model or persistence changes beyond STU-117.
 
 ## Addendum
 
 | Date       | Change                         | Reason                        |
 | ---------- | ------------------------------ | ----------------------------- |
 | 2026-04-06 | Initial UX design after STU-117 | Align UI story with workflow |
+| 2026-04-06 | Clarify bulk edits, preview summary vs diff, publish provenance | PR review feedback |
