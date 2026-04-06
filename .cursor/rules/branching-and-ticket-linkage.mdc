@@ -5,7 +5,9 @@ alwaysApply: true
 
 # Branching And Ticket Linkage
 
-- Start each feature or bugfix on a new branch linked to a Linear issue.
+- Start each feature or bugfix on a new branch linked to a Linear issue; prefer
+  a **git worktree** (`.cursor/skills/git-worktrees/SKILL.md`) or Cursor
+  **`/linear-next`** from the primary clone.
 - Use branch naming with ticket prefix (for example `ENG-123-feature-name`).
 - Include the ticket link in PRs and implementation summaries.
 - Never update or merge `master` without explicit user permission.

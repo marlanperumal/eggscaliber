@@ -15,6 +15,9 @@ specs, design, and user testing.
 - Every change ships with tests, telemetry updates, and rollback notes.
 - Every feature must have version-controlled spec, design, and validation artifacts.
 - Every feature branch must map to a Linear issue and must not update `master` without permission.
+- Prefer **git worktrees** per ticket. In Cursor, **`/linear-next`** (see
+  `.cursor/commands/linear-next.md`) picks the next unblocked Linear issue via
+  **MCP** and opens a worktree per the feature-workflow skill.
 - Default merge strategy is squash merge to keep `master` history concise per ticket.
 
 ## Source Of Truth Split

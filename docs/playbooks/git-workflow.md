@@ -3,6 +3,12 @@
 ## Branching Policy
 
 - Do all feature and bugfix work on a new branch.
+- Prefer a **git worktree** per ticket (see `.cursor/skills/git-worktrees/SKILL.md`)
+  so the primary checkout stays usable for other work.
+- To pick the next **unblocked** Linear issue (by priority and due date) and
+  open a worktree: in **Cursor**, run **`/linear-next`** (repo command under
+  `.cursor/commands/linear-next.md`). It uses **Linear MCP** plus shell for
+  `git worktree` / `make setup`.
 - Branch must be linked to a Linear issue.
 - Recommended branch format: `<LINEAR-ID>-<short-description>`.
 - Feature branches may be rebased and force-pushed with `--force-with-lease`.
@@ -17,7 +23,8 @@ Examples:
 
 1. Confirm Linear issue has spec, design, and validation doc links.
 2. Create feature docs at `docs/features/<TICKET>/spec.md`, `design.md`, and `validation.md`.
-3. Create branch from current `master` tip.
+3. Create branch from current `master` tip (often via `git worktree add` or
+   Cursor **`/linear-next`**).
 4. Implement and commit freely on the ticket branch.
 5. Rebase on latest `master` before final review.
 6. Push and open PR linked to Linear issue.

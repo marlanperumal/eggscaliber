@@ -15,5 +15,8 @@ node_modules/
 .mypy_cache/
 .ruff_cache/
 
+# Git worktrees (see .cursor/skills/git-worktrees/SKILL.md)
+.worktrees/
+
 # OS
 .DS_Store

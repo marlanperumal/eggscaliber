@@ -19,3 +19,7 @@ with human escalation.
 Do not skip the waits when expecting Gemini Code Assist; poll only after the
 wait. Default PR base branch for this repository is **`master`** unless the
 default branch was renamed (confirm with `gh repo view`).
+
+Use **`/linear-next`** to pick the next unblocked Linear issue by priority and
+due date; use **git worktrees** per `.cursor/skills/git-worktrees/SKILL.md` for
+implementation.

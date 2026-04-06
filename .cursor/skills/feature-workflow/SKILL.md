@@ -22,25 +22,53 @@ review bot can run before you fetch feedback.
   `AGENTS.md`.
 - **Default base branch is `master`** (not `main`) unless the repo default was
   renamed—confirm with `gh repo view --json defaultBranchRef`.
-- **Linear**: read MCP tool schemas under
+- **Linear MCP** (for agents in Cursor): read tool schemas under
   `~/.cursor/projects/<workspace>/mcps/plugin-linear-linear/tools/*.json`
   before calling Linear tools; use real newlines in markdown bodies, not
-  `\n` escapes.
+  `\n` escapes. MCP uses Cursor’s Linear connection.
+- **Slash command:** **`/linear-next`** (`.cursor/commands/linear-next.md`) runs
+  the same triage + worktree start flow via MCP and shell; no separate Linear
+  API key in `.env` is required for that path.
 - **GitHub CLI**: `gh auth status` must succeed for `gh pr`, `gh api`, comments.
+- **Worktrees:** implement ticket work in a **git worktree** (see
+  **`.cursor/skills/git-worktrees/SKILL.md`**) unless the user directs otherwise.
+
+## Pick next ticket (Cursor)
+
+In Cursor chat or Agent, run **`/linear-next`**. That loads
+`.cursor/commands/linear-next.md`, which tells the agent to use **Linear MCP**
+(priority → due date → unblocked), set **In Progress**, add a **git worktree**,
+run **`make setup`**, and stub feature docs if missing.
+
+Then continue with **Phase B** onward from **inside the worktree** directory.
 
 ## Phase A — Pick up the ticket
 
-1. **Linear**: set issue **In Progress** (`save_issue` with `state` + `id`).
-2. **Branch**: create from latest default branch:
-   `git fetch origin && git checkout <base> && git pull && git checkout -b <TICKET>-short-name`
-   Use ticket prefix from Linear (e.g. `STU-117-architecture-slice`).
+1. **Linear**: set issue **In Progress** (`save_issue` with `state` + `id`), or
+   invoke **`/linear-next`** so the agent does it via MCP.
+2. **Branch in a worktree** (from your primary clone):
+
+   ```bash
+   git fetch origin
+   git worktree add .worktrees/<TICKET>-short-name -b <TICKET>-short-name origin/master
+   cd .worktrees/<TICKET>-short-name
+   make setup
+   ```
+
+   Use the ticket prefix from Linear (e.g. `STU-117-architecture-slice`). If the
+   branch already exists locally:
+   `git worktree add .worktrees/<TICKET>-short-name <TICKET>-short-name`.
+
+   Run **commits**, **`make check`**, and **`git push`** from this **worktree**
+   root.
+
 3. **Artifacts**: ensure `docs/features/<TICKET>/spec.md`, `design.md`,
    `validation.md` exist before push (see `scripts/check_feature_docs.sh`).
 4. Implement, test, update docs in-place with addenda when intent changes.
 
 ## Phase B — Verify and push (no drive-by scope)
 
-Run from repo root **in this order** unless a playbook overrides:
+Run from **the worktree** root **in this order** unless a playbook overrides:
 
 ```bash
 make check
@@ -160,11 +188,16 @@ If the bot username differs, filter threads by `author.login` (e.g.
    docs reconciliation note in the issue or PR.
 2. **Merge**: squash per ticket policy; do not merge `master` without explicit
    permission if policy requires it.
+3. **Worktree**: `git worktree remove` / `git worktree prune` for the ticket
+   directory (see **git-worktrees** skill).
 
 ## Quick command cheat sheet
 
 | Step | Command |
 | ---- | ------- |
+| Next Linear issue + worktree | `/linear-next` (Cursor command) |
+| New worktree + branch | `git worktree add .worktrees/<b> -b <b> origin/master` then `cd .worktrees/<b>` |
+| Worktree setup | `make setup` (from worktree root) |
 | Full verify | `make check` |
 | Feature docs gate | `bash scripts/check_feature_docs.sh` |
 | Push | `git push -u origin <branch>` |
@@ -177,6 +210,9 @@ If the bot username differs, filter threads by `author.login` (e.g.
 
 ## What not to do
 
+- Do not implement a **full** ticket slice only by switching branches in the
+  primary clone unless the user explicitly directs that (worktrees are the
+  default; use **git-worktrees** skill).
 - Do not merge `master` or change protected defaults without explicit user
   approval (per workspace rules).
 - Do not skip the **5-minute waits** when expecting Gemini; polling immediately
