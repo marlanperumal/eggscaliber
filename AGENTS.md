@@ -59,6 +59,14 @@ For each feature slice:
 
 Do not skip the order unless an explicit exception is recorded.
 
+## Feature Delivery Workflow
+
+For ticket-linked work through **push**, **PR open/update**, **Gemini (or similar)
+PR review bots**, and **Linear** status/comments, agents must read and execute
+`.cursor/skills/feature-workflow/SKILL.md`. It defines verification commands,
+GitHub CLI and GraphQL steps, **mandatory 5-minute waits** before polling bot
+feedback, `@gemini review` re-review loops, and escalation when loops cap out.
+
 ## Agent Team Topology
 
 - Discovery Cell: clarifies requirements, constraints, and acceptance tests.
