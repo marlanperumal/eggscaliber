@@ -1,4 +1,4 @@
-.PHONY: setup dev api web lint test docker-up docker-down check hooks-install hooks-run hooks-run-push
+.PHONY: setup dev api web lint test docker-up docker-down docker-validate check verify hooks-install hooks-run hooks-run-push
 
 setup:
 	uv sync --project apps/api
@@ -27,7 +27,12 @@ docker-up:
 docker-down:
 	docker compose down
 
+docker-validate:
+	docker compose config > /dev/null
+
 check: lint test
+
+verify: check hooks-run-push docker-validate
 
 hooks-install:
 	uvx pre-commit install --hook-type pre-commit --hook-type pre-push
