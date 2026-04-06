@@ -31,3 +31,10 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
+
+      - id: feature-docs-check
+        name: feature docs check
+        entry: scripts/check_feature_docs.sh
+        language: system
+        pass_filenames: false
+        stages: [pre-push]

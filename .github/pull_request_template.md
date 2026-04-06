@@ -2,9 +2,9 @@
 
 - Linear issue: <!-- e.g. https://linear.app/... -->
 - Branch: <!-- e.g. ENG-123-feature-name -->
-- Spec doc: <!-- repo path -->
-- Design doc: <!-- repo path -->
-- Validation doc: <!-- repo path -->
+- Spec doc: <!-- e.g. docs/features/STU-108/spec.md -->
+- Design doc: <!-- e.g. docs/features/STU-108/design.md -->
+- Validation doc: <!-- e.g. docs/features/STU-108/validation.md -->
 
 ## Changes
 
@@ -29,6 +29,7 @@
 - [ ] Linear issue linked
 - [ ] Branch is ticket-linked
 - [ ] Spec, design, validation docs linked
+- [ ] Feature docs are located under docs/features/<TICKET>/
 - [ ] Tests and verification evidence included
 - [ ] As-built reconciliation completed
 - [ ] Stage gate updated in Linear

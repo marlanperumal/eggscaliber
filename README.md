@@ -42,3 +42,9 @@ Run hook suites manually:
 
 - `make hooks-run` (pre-commit stage)
 - `make hooks-run-push` (pre-push stage, includes tests)
+
+Feature branches must include:
+
+- `docs/features/<TICKET>/spec.md`
+- `docs/features/<TICKET>/design.md`
+- `docs/features/<TICKET>/validation.md`

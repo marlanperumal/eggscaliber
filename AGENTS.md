@@ -42,9 +42,9 @@ Gate criteria and required artifacts are defined in
 
 Required feature artifacts (version controlled in repo):
 
-- Spec document
-- Design document
-- Validation document
+- `docs/features/<TICKET>/spec.md`
+- `docs/features/<TICKET>/design.md`
+- `docs/features/<TICKET>/validation.md`
 
 Each artifact must be linked from the Linear issue.
 

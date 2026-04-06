@@ -16,13 +16,14 @@ Examples:
 ## Required Sequence Per Ticket
 
 1. Confirm Linear issue has spec, design, and validation doc links.
-2. Create branch from current `master` tip.
-3. Implement and commit freely on the ticket branch.
-4. Rebase on latest `master` before final review.
-5. Push and open PR linked to Linear issue.
-6. Merge using squash merge (default).
-7. Delete feature branch after merge.
-8. Do not merge or update `master` without explicit user permission.
+2. Create feature docs at `docs/features/<TICKET>/spec.md`, `design.md`, and `validation.md`.
+3. Create branch from current `master` tip.
+4. Implement and commit freely on the ticket branch.
+5. Rebase on latest `master` before final review.
+6. Push and open PR linked to Linear issue.
+7. Merge using squash merge (default).
+8. Delete feature branch after merge.
+9. Do not merge or update `master` without explicit user permission.
 
 ## Merge Strategy
 
@@ -43,6 +44,7 @@ Examples:
 - Keep PRs small enough for focused review; split oversized work into ticketed slices.
 - Require CI green before merge (`pnpm check`, `make lint`, `make test`).
 - Require PR template completion and governance checklist.
+- Require feature-docs check to pass (hooks + CI).
 - Use `--force-with-lease` only on your own feature branch.
 - Avoid long-lived branches; rebase frequently during active work.
 

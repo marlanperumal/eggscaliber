@@ -30,6 +30,11 @@ jobs:
       - name: Sync API dependencies
         run: uv sync --project apps/api
 
+      - name: Verify feature docs artifacts
+        env:
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+        run: scripts/check_feature_docs.sh
+
       - name: Run JS checks
         run: pnpm check
 

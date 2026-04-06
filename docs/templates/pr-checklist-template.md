@@ -13,6 +13,7 @@ Use this checklist in every pull request.
 - [ ] Spec doc linked
 - [ ] Design doc linked
 - [ ] Validation doc linked
+- [ ] Feature docs exist at `docs/features/<TICKET>/`
 
 ## Verification
 
