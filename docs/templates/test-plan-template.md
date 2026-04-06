@@ -32,4 +32,3 @@
 
 - Any test-driven changes requiring spec/design updates:
 - Addendum entries updated:
-

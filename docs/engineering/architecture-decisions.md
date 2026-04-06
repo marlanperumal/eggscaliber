@@ -23,4 +23,3 @@ Store architecture decision entries using the template below.
 - Consequences: Faster analytics prototyping, added need for clear cross-stack contracts.
 - Alternatives considered: Full TypeScript stack
 - Related artifacts: roadmap and setup plan
-

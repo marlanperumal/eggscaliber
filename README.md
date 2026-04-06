@@ -32,3 +32,13 @@ Run these from the repository root:
 - `pnpm check`
 - `make docker-down`
 
+## Local Quality Hooks
+
+Install local hooks once per clone:
+
+- `make hooks-install`
+
+Run hook suites manually:
+
+- `make hooks-run` (pre-commit stage)
+- `make hooks-run-push` (pre-push stage, includes tests)

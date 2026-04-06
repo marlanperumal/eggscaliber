@@ -26,3 +26,5 @@ This playbook defines baseline repository enforcement for Eggscaliber.
 
 - This setup optimizes for pilot speed while preventing direct pushes to `master`.
 - Increase required approvals to 1+ when team review load increases.
+- Local developers should install repo hooks via `make hooks-install`.
+- CI runs pre-commit checks to keep local and pre-merge quality gates aligned.

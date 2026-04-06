@@ -55,4 +55,3 @@ Use this template for each pattern:
 - Update this file when introducing or replacing a pattern.
 - Reference updated pattern IDs in PR descriptions.
 - Record deviations in `docs/engineering/exceptions.md`.
-

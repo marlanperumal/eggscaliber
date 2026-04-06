@@ -19,4 +19,3 @@ patterns and testing standards.
 ## Active Exceptions
 
 None.
-

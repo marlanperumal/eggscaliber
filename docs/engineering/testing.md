@@ -38,4 +38,3 @@ For each significant feature, add:
 - Manual test script in `docs/playbooks/manual-qa/`.
 - Observed result summary in the PR.
 - Follow-up issue for any deferred defects.
-
