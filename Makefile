@@ -5,10 +5,11 @@ setup:
 	pnpm install
 
 dev: docker-up
-	@echo "Run 'make api' and 'make web' in separate terminals."
+	@echo "Starting API and web servers (Ctrl+C to stop both)..."
+	@trap 'kill 0' INT TERM EXIT; $(MAKE) api & $(MAKE) web & wait
 
 api:
-	uv run --project apps/api uvicorn apps.api.main:app --reload --host 0.0.0.0 --port 8000
+	PYTHONPATH=. uv run --project apps/api uvicorn apps.api.main:app --reload --host 0.0.0.0 --port 8000
 
 web:
 	pnpm --filter @eggscaliber/web dev
@@ -19,7 +20,7 @@ lint:
 
 test:
 	pnpm test
-	PYTHONPATH=. uv run --project apps/api pytest
+	PYTHONPATH=. uv run --project apps/api pytest apps/api
 
 docker-up:
 	docker compose up -d
