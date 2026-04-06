@@ -211,7 +211,7 @@ If the bot username differs, filter threads by `author.login` (e.g.
 
 | Step | Command |
 | ---- | ------- |
-| New worktree + branch | `git worktree add .worktrees/<b> -b <b> origin/<base>` then `cd .worktrees/<b>` |
+| New worktree + branch | `git worktree add .worktrees/<branch> -b <branch> origin/<base>` then `cd .worktrees/<branch>` |
 | Worktree setup | `make setup` (from worktree root) |
 | Full verify | `make check` |
 | Feature docs gate | `bash scripts/check_feature_docs.sh` |
@@ -219,9 +219,9 @@ If the bot username differs, filter threads by `author.login` (e.g.
 | PR create | `gh pr create --base master --head <branch> …` |
 | Wait 5 min | `sleep 300` |
 | PR threads | `gh api graphql` (query above) |
-| Reply inline | `gh api --method POST repos/OWNER/REPO/pulls/<PR>/comments --input` JSON with `in_reply_to` **number** |
-| Resolve thread | `gh api graphql --input` JSON: `mutation($threadId:ID!){resolveReviewThread…}` + `variables.threadId` |
-| Ping Gemini | `gh pr comment <n> --body "@gemini review"` |
+| Reply inline | `gh api --method POST repos/OWNER/REPO/pulls/<PR_NUMBER>/comments --input -` (full JSON body: Phase D) |
+| Resolve thread | `gh api graphql --input -` (mutation + variables: Phase D) |
+| Ping Gemini | `gh pr comment <PR_NUMBER> --body "@gemini review"` |
 
 ## What not to do
 

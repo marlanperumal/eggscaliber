@@ -151,10 +151,15 @@ When the branch is merged or the worktree is no longer needed:
    git worktree prune
    ```
 
-4. Delete the local branch when appropriate (after merge):
+4. Delete the local branch when appropriate (after merge). With **squash** merges
+   (per `AGENTS.md`), `git branch -d` often reports “not fully merged” because the
+   tip commit is not on `master`; use **`git branch -D <branch-name>`** to drop the
+   local branch anyway, or delete the branch via **`gh pr merge`** when your flow
+   uses **`--delete-branch`**.
 
    ```bash
-   git branch -d <branch-name>
+   git branch -d <branch-name>   # ok when branch is merged as a merge commit
+   # git branch -D <branch-name> # after squash merge to default branch, if -d refuses
    ```
 
 5. **Do not** manually `rm -rf` the worktree directory before
@@ -171,7 +176,7 @@ When the branch is merged or the worktree is no longer needed:
 | Verify | `make check` from same root |
 | Env | Per-worktree `.env` or symlink; never commit |
 | Ports / Docker | One active stack or distinct ports/project names |
-| Done | `git worktree remove` → `git worktree prune` → optional `git branch -d` |
+| Done | `git worktree remove` → `git worktree prune` → optional `git branch -d` / `-D` if squash-merged |
 
 ## Related
 
