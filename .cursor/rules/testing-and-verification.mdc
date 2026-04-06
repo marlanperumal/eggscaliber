@@ -1,0 +1,12 @@
+---
+description: Minimum test and verification requirements for each feature
+alwaysApply: true
+---
+
+# Testing And Verification
+
+- Add or update tests for every behavior change.
+- Cover at least one happy path and one negative path.
+- Verify observability updates for critical flows.
+- Do not claim completion without running relevant checks.
+- Document manual QA steps for ingestion and AI-grounding changes.

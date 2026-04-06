@@ -1,0 +1,12 @@
+---
+description: Grounded AI responses and tenant-safe data handling
+alwaysApply: true
+---
+
+# Grounding And Data Safety
+
+- Only return AI answers that can be traced to available datasets and executed queries.
+- If data is missing, request missing input instead of inferring.
+- Never mix tenant data across retrieval, transformation, or response composition.
+- Preserve raw source data and use versioned metadata workflows for edits.
+- Include provenance references for critical outputs when available.

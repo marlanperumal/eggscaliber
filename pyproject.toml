@@ -1,0 +1,9 @@
+[project]
+name = "eggscaliber"
+version = "0.1.0"
+description = "Eggscaliber workspace meta project"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.uv]
+managed = true

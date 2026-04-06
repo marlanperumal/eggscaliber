@@ -1,0 +1,13 @@
+{
+  "name": "@eggscaliber/web",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "echo \"web dev server not scaffolded yet\"",
+    "build": "echo \"web build not scaffolded yet\"",
+    "test": "echo \"web tests not scaffolded yet\"",
+    "lint": "echo \"web lint not scaffolded yet\"",
+    "format": "echo \"web format not scaffolded yet\"",
+    "storybook": "echo \"storybook not scaffolded yet\""
+  }
+}

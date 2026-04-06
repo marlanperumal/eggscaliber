@@ -1,0 +1,11 @@
+---
+description: Feature flag usage and release safety requirements
+alwaysApply: true
+---
+
+# Feature Flags And Release
+
+- Ship risky or incomplete features behind flags by default.
+- Define flag owner, default state, and rollback path.
+- Use staged rollout for pilot-facing features.
+- Include release checklist and post-release review artifacts.

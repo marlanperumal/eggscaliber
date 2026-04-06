@@ -1,0 +1,47 @@
+minimum_pre_commit_version: "3.7.0"
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-merge-conflict
+
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check (apps/api)
+        entry: uv run --project apps/api ruff check apps/api
+        language: system
+        pass_filenames: false
+        stages: [pre-commit, pre-push]
+
+      - id: python-tests
+        name: pytest (apps/api)
+        entry: bash -c 'PYTHONPATH=. uv run --project apps/api pytest'
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+
+      - id: mypy-check
+        name: mypy (apps/api)
+        entry: uv run --project apps/api mypy apps/api
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+
+      - id: pnpm-check
+        name: pnpm js checks (workspace)
+        entry: bash -c 'pnpm lint && pnpm test'
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+
+      - id: feature-docs-check
+        name: feature docs check
+        entry: scripts/check_feature_docs.sh
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
