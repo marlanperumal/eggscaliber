@@ -59,7 +59,12 @@ metadata versioning rules.
 - `MetadataLifecycleState`: `draft | preview | published`.
 - `IngestionSourceKind`: `csv | spss | postgres`.
 - `PreviewGateReport`: boolean `passed` plus optional blocking messages.
-- `MetadataRevision`: tenant-scoped, instance-bound, carries opaque `body` map.
+- `MetadataRevision`: tenant-scoped, instance-bound, carries opaque `body` map
+  (deep-copied on draft create so nested structures are snapshotted).
+- `MetadataWorkflowError`: optional `details` tuple (e.g. preview gate
+  messages) for structured handling without parsing `str(exc)`.
+- Workflow lookup by `revision_id`: unknown id or wrong `tenant_id` both raise
+  `MetadataNotFoundError` with the same message shape.
 
 ## API/Interface Changes
 
@@ -70,7 +75,9 @@ metadata versioning rules.
 
 - Domain package exists with models, protocols, and in-memory workflow
   implementation as specified.
-- Illegal transitions and tenant mismatches raise documented exceptions.
+- Illegal transitions raise `MetadataWorkflowError` (with `details` when
+  preview gates fail). Wrong-tenant or unknown revision access raises
+  `MetadataNotFoundError`.
 - Automated tests cover at least one happy path and multiple negative paths.
 - Spec, design, and validation docs exist under `docs/features/STU-117/`.
 
@@ -94,3 +101,4 @@ metadata versioning rules.
 | Date       | Change                         | Reason                          |
 | ---------- | ------------------------------ | ------------------------------- |
 | 2026-04-06 | Initial architecture slice   | STU-117 scope baseline          |
+| 2026-04-06 | PR review hardening (deep copy, gate `details`, unified not-found) | PR #2 |

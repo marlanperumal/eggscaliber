@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import logging
 import uuid
 from typing import Any, Mapping
@@ -9,7 +10,6 @@ from typing import Any, Mapping
 from apps.api.metadata_domain.errors import (
     MetadataNotFoundError,
     MetadataWorkflowError,
-    TenantIsolationError,
 )
 from apps.api.metadata_domain.models import (
     MetadataLifecycleState,
@@ -18,13 +18,6 @@ from apps.api.metadata_domain.models import (
 )
 
 logger = logging.getLogger(__name__)
-
-
-def _ensure_tenant(expected: str, actual: str, resource: str) -> None:
-    if expected != actual:
-        raise TenantIsolationError(
-            f"tenant mismatch for {resource}: expected {expected!r}, got {actual!r}"
-        )
 
 
 class InMemoryMetadataWorkflowService:
@@ -50,7 +43,7 @@ class InMemoryMetadataWorkflowService:
             tenant_id=tenant_id,
             dataset_instance_id=dataset_instance_id,
             state=MetadataLifecycleState.DRAFT,
-            body=dict(body),
+            body=copy.deepcopy(dict(body)),
         )
         self._revisions[revision_id] = rev
         logger.info(
@@ -76,7 +69,10 @@ class InMemoryMetadataWorkflowService:
                 f"submit_for_preview requires DRAFT, got {rev.state}"
             )
         if not gate.passed:
-            raise MetadataWorkflowError("preview gate failed; cannot enter PREVIEW")
+            raise MetadataWorkflowError(
+                "preview gate failed; cannot enter PREVIEW",
+                details=tuple(gate.messages),
+            )
 
         updated = rev.model_copy(
             update={"state": MetadataLifecycleState.PREVIEW},
@@ -133,9 +129,7 @@ class InMemoryMetadataWorkflowService:
         return updated
 
     def _get_revision(self, tenant_id: str, revision_id: str) -> MetadataRevision:
-        try:
-            rev = self._revisions[revision_id]
-        except KeyError as exc:
-            raise MetadataNotFoundError(f"unknown revision {revision_id!r}") from exc
-        _ensure_tenant(tenant_id, rev.tenant_id, "metadata_revision")
+        rev = self._revisions.get(revision_id)
+        if rev is None or rev.tenant_id != tenant_id:
+            raise MetadataNotFoundError(f"unknown revision {revision_id!r}")
         return rev

@@ -4,10 +4,10 @@ import pytest
 
 from apps.api.metadata_domain import (
     InMemoryMetadataWorkflowService,
+    MetadataLifecycleState,
     MetadataNotFoundError,
     MetadataWorkflowError,
     PreviewGateReport,
-    TenantIsolationError,
 )
 
 
@@ -18,17 +18,17 @@ def test_draft_preview_publish_happy_path() -> None:
         "instance-1",
         {"fields": [{"name": "x"}]},
     )
-    assert draft.state == "draft"
+    assert draft.state == MetadataLifecycleState.DRAFT
 
     preview = svc.submit_for_preview(
         "tenant-a",
         draft.revision_id,
         PreviewGateReport(passed=True),
     )
-    assert preview.state == "preview"
+    assert preview.state == MetadataLifecycleState.PREVIEW
 
     published = svc.publish("tenant-a", draft.revision_id)
-    assert published.state == "published"
+    assert published.state == MetadataLifecycleState.PUBLISHED
 
 
 def test_discard_preview_returns_to_draft() -> None:
@@ -40,7 +40,7 @@ def test_discard_preview_returns_to_draft() -> None:
         PreviewGateReport(passed=True),
     )
     again = svc.discard_preview("t1", draft.revision_id)
-    assert again.state == "draft"
+    assert again.state == MetadataLifecycleState.DRAFT
 
 
 def test_publish_from_draft_rejected() -> None:
@@ -53,18 +53,19 @@ def test_publish_from_draft_rejected() -> None:
 def test_submit_for_preview_fails_when_gate_fails() -> None:
     svc = InMemoryMetadataWorkflowService()
     draft = svc.create_draft_revision("t1", "i1", {})
-    with pytest.raises(MetadataWorkflowError, match="preview gate"):
+    with pytest.raises(MetadataWorkflowError, match="preview gate") as exc_info:
         svc.submit_for_preview(
             "t1",
             draft.revision_id,
             PreviewGateReport(passed=False, messages=("bad",)),
         )
+    assert exc_info.value.details == ("bad",)
 
 
-def test_tenant_mismatch_raises() -> None:
+def test_tenant_mismatch_raises_not_found() -> None:
     svc = InMemoryMetadataWorkflowService()
     draft = svc.create_draft_revision("tenant-a", "i1", {})
-    with pytest.raises(TenantIsolationError):
+    with pytest.raises(MetadataNotFoundError):
         svc.submit_for_preview(
             "tenant-b",
             draft.revision_id,
@@ -88,3 +89,11 @@ def test_no_transitions_after_published() -> None:
         svc.submit_for_preview("t1", rid, PreviewGateReport(passed=True))
     with pytest.raises(MetadataWorkflowError, match="requires PREVIEW"):
         svc.discard_preview("t1", rid)
+
+
+def test_create_draft_deep_copies_nested_body() -> None:
+    svc = InMemoryMetadataWorkflowService()
+    nested: list[dict[str, str]] = [{"name": "a"}]
+    draft = svc.create_draft_revision("t1", "i1", {"fields": nested})
+    nested[0]["name"] = "mutated"
+    assert draft.body["fields"][0]["name"] == "a"

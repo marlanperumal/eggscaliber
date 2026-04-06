@@ -38,7 +38,9 @@ Introduce a small **metadata domain** package that separates:
 ### Tenant safety
 
 - Every workflow method accepts `tenant_id` and compares it to the stored
-  revision tenant; mismatch raises `TenantIsolationError`.
+  revision tenant. Missing revision **or** tenant mismatch surfaces as the same
+  `MetadataNotFoundError` so callers cannot infer whether an id exists in
+  another tenant.
 
 ## Component/Module Boundaries
 
@@ -80,6 +82,9 @@ N/A (non-UI).
 
 - Tenant id is mandatory on all workflow entry points.
 - Adapters must not return descriptors for sources outside the requested tenant.
+- `InMemoryMetadataWorkflowService` uses a single not-found error for unknown
+  ids and cross-tenant access; HTTP layers should map that to `404` without
+  distinguishing cases.
 
 ## Performance Notes
 
@@ -100,3 +105,4 @@ N/A (non-UI).
 | Date       | Change                        | Reason                 |
 | ---------- | ----------------------------- | ---------------------- |
 | 2026-04-06 | Initial package layout        | STU-117 implementation |
+| 2026-04-06 | Unified not-found on tenant mismatch; deep-copy draft body; `MetadataWorkflowError.details` | PR #2 review (Gemini Code Assist) |

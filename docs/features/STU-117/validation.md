@@ -14,8 +14,9 @@ behavior match the spec and design.
 
 ## Automated Verification
 
-- Unit: `apps/api/tests/test_metadata_workflow.py` (happy path, gate failure,
-  illegal publish, tenant mismatch, unknown revision, terminal published).
+- Unit: `apps/api/tests/test_metadata_workflow.py` (happy path, gate failure
+  with `details`, illegal publish, wrong-tenant as not-found, unknown revision,
+  terminal published, nested body deep copy).
 - Static: `ruff check apps/api`, `mypy apps/api` via `make check`.
 
 ## Manual Verification
@@ -47,3 +48,4 @@ behavior match the spec and design.
 | Date       | Change              | Reason        |
 | ---------- | ------------------- | ------------- |
 | 2026-04-06 | Initial validation  | STU-117 close |
+| 2026-04-06 | Extended cases for PR #2 review | Review resolution |
