@@ -101,8 +101,9 @@ from **this** worktree root.
   worktrees—avoid if branches need different values (e.g. different API URLs).
 - **Docker Compose:** if multiple worktrees run **`docker compose`** against the
   same project name and ports, they **collide**. Options: run compose from only
-  one checkout at a time, use different **project names** / **ports** via env
-  (e.g. in a worktree-local `.env`), or stop stacks before switching.
+  one checkout at a time, set distinct **`COMPOSE_PROJECT_NAME`** (and/or **ports**)
+  per worktree via env (e.g. in a worktree-local `.env`), or stop stacks before
+  switching.
 
 Document any branch-specific env in the ticket or `docs/features/<TICKET>/`
 artifacts, not in git-tracked secret files.

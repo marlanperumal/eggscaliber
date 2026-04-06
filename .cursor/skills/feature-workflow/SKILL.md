@@ -121,7 +121,7 @@ when declining or correcting a bot mistake.
    gh api graphql -f query='
    query {
      repository(owner: "OWNER", name: "REPO") {
-       pullRequest(number: PR_NUMBER) {
+       pullRequest(number: <PR_NUMBER>) {
          reviewThreads(first: 50) {
            nodes {
              id
@@ -136,6 +136,9 @@ when declining or correcting a bot mistake.
    }'
    ```
 
+   Substitute a numeric PR id for **`<PR_NUMBER>`** inside the query (GraphQL
+   `Int!`).
+
    Use each comment’s **`databaseId`** (integer from GraphQL) as the REST
    **`in_reply_to`** target when posting a reply. The GraphQL **`id`** field is the
    global node id (opaque string); **`databaseId`** is the numeric id the REST
@@ -143,19 +146,20 @@ when declining or correcting a bot mistake.
    **`line`** for the commented line.
 
 3. **Also** list top-level PR comments if needed:
-   `gh pr view PR_NUMBER --json comments,reviews`
+   `gh pr view <PR_NUMBER> --json comments,reviews`
 4. For each thread: implement fixes, **reply in-thread** (REST). GitHub expects
    **`in_reply_to` as a JSON number**; `gh api` form flags send strings and return
    **422**, so use **`--input`** with a JSON object (integer `in_reply_to`):
 
    ```bash
-   gh api --method POST repos/OWNER/REPO/pulls/PR_NUMBER/comments --input - <<'JSON'
-   {"body":"…","in_reply_to":3041374692}
+   gh api --method POST repos/OWNER/REPO/pulls/<PR_NUMBER>/comments --input - <<'JSON'
+   {"body":"…","in_reply_to":1234567890}
    JSON
    ```
 
-   Replace the number with the parent comment’s **`databaseId`** from step 2 (no
-   quotes around the number in JSON).
+   Replace **`<PR_NUMBER>`** in the URL with the PR number. Replace **`1234567890`**
+   with the parent comment’s integer **`databaseId`** from step 2 (JSON requires a
+   numeric literal there, not a string or angle-bracket token).
 
 5. **Resolve** threads (GraphQL), using the thread **`id`** from step 2 (e.g.
    `PRRT_…`). Prefer a single JSON body so variables are not stripped by the
@@ -180,7 +184,7 @@ After you have addressed the current round of bot comments (replies + resolves
 1. Request a fresh review:
 
    ```bash
-   gh pr comment PR_NUMBER --body "@gemini review"
+   gh pr comment <PR_NUMBER> --body "@gemini review"
    ```
 
 2. **Wait 5 minutes** again (`sleep 300` / `Await` 300000ms).
