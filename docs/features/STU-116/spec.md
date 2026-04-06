@@ -67,6 +67,12 @@ errors, skipped preview discipline, or UX that fights the domain invariants in
 
 - UX must respect **no publish from draft** and **no preview without passing
   gate** as enforced by the reference workflow (see STU-117 design).
+- **Preview gate integrity (production):** any HTTP/API entrypoint must **run or
+  verify** preview gates **server-side** and pass a trustworthy
+  `PreviewGateReport` into the workflow port. Untrusted clients must not be
+  able to advance the lifecycle by forging `passed: true`. The domain method
+  signature that accepts a report is for **in-process** orchestration and tests
+  (STU-117), not an instruction to trust browser-supplied gate results.
 - **Published** revisions are terminal in the product narrative: no “edit in
   place”; changes fork through a new draft revision (wording for pilots).
 - Field-level body remains **opaque** at the domain layer; UI copy may describe
@@ -97,3 +103,4 @@ errors, skipped preview discipline, or UX that fights the domain invariants in
 | Date       | Change                                      | Reason                          |
 | ---------- | ------------------------------------------- | ------------------------------- |
 | 2026-04-06 | Initial spec replacing stub after STU-117   | Unblock design/build handoff    |
+| 2026-04-06 | Gate integrity constraint for production API | PR security review              |

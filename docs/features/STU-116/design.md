@@ -132,6 +132,11 @@ Illegal transitions should surface **inline errors** tied to the action (e.g.
   gate-only summary, or both—and where computation lives (service vs UI).
 - **Publish provenance**: actor/timestamp (or equivalent) for the published
   recap; may require model or persistence changes beyond STU-117.
+- **Gate report trust boundary**: STU-122 must run preview validation
+  **server-side** (or otherwise authenticate the gate outcome) so clients
+  cannot submit a forged passing `PreviewGateReport`. The design’s “Run
+  preview” action maps to that trusted execution path, not to the client
+  asserting `passed` on its own.
 
 ## Addendum
 
@@ -139,3 +144,4 @@ Illegal transitions should surface **inline errors** tied to the action (e.g.
 | ---------- | ------------------------------ | ----------------------------- |
 | 2026-04-06 | Initial UX design after STU-117 | Align UI story with workflow |
 | 2026-04-06 | Clarify bulk edits, preview summary vs diff, publish provenance | PR review feedback |
+| 2026-04-06 | Document server-side gate trust boundary           | PR security review |
