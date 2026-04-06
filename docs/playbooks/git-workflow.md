@@ -5,6 +5,8 @@
 - Do all feature and bugfix work on a new branch.
 - Branch must be linked to a Linear issue.
 - Recommended branch format: `<LINEAR-ID>-<short-description>`.
+- Feature branches may be rebased and force-pushed with `--force-with-lease`.
+- Never rewrite `master` history.
 
 Examples:
 
@@ -16,9 +18,33 @@ Examples:
 1. Confirm Linear issue has spec, design, and validation doc links.
 2. Create branch from current `master` tip.
 3. Implement and commit freely on the ticket branch.
-4. Push and open PR linked to Linear issue.
-5. Complete as-built reconciliation before final review.
-6. Do not merge or update `master` without explicit user permission.
+4. Rebase on latest `master` before final review.
+5. Push and open PR linked to Linear issue.
+6. Merge using squash merge (default).
+7. Delete feature branch after merge.
+8. Do not merge or update `master` without explicit user permission.
+
+## Merge Strategy
+
+- Default merge mode: **squash merge**.
+- Disable regular merge commits and rebase merges on GitHub repository settings.
+- One merged PR should represent one Linear ticket outcome.
+- Keep implementation detail in PR conversation and linked docs, not master history noise.
+
+## Stacked PR Policy
+
+- Prefer single PR per ticket by default.
+- Allow stacked PRs only when each layer is independently reviewable and testable.
+- Limit stack depth to 2-3 open PRs.
+- Each stacked PR still requires ticket linkage and full artifact/reconciliation checks.
+
+## Additional Rules To Formalize Early
+
+- Keep PRs small enough for focused review; split oversized work into ticketed slices.
+- Require CI green before merge (`pnpm check`, `make lint`, `make test`).
+- Require PR template completion and governance checklist.
+- Use `--force-with-lease` only on your own feature branch.
+- Avoid long-lived branches; rebase frequently during active work.
 
 ## As-Built Reconciliation Rule
 

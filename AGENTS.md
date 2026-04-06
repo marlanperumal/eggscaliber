@@ -15,6 +15,7 @@ specs, design, and user testing.
 - Every change ships with tests, telemetry updates, and rollback notes.
 - Every feature must have version-controlled spec, design, and validation artifacts.
 - Every feature branch must map to a Linear issue and must not update `master` without permission.
+- Default merge strategy is squash merge to keep `master` history concise per ticket.
 
 ## Source Of Truth Split
 
@@ -115,6 +116,7 @@ Each PR must include:
 - Exception reference (if any).
 - As-built reconciliation note (code aligned to docs, or docs updated in-place with addendum).
 - Completed PR checklist from `docs/templates/pr-checklist-template.md`.
+- Branch rebased on latest `master` before merge unless explicitly waived.
 
 ## Pattern And Testing Governance
 
