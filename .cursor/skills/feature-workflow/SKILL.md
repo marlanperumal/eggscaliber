@@ -116,7 +116,7 @@ Review** when the PR is open.
 4. For each thread: implement fixes, **reply in-thread** (REST):
 
    ```bash
-   gh api repos/OWNER/REPO/pulls/comments -f body='…' -F in_reply_to=DATABASE_ID
+   gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments -f body='…' -F in_reply_to=DATABASE_ID
    ```
 
 5. **Resolve** threads (GraphQL):
