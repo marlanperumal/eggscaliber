@@ -6,7 +6,8 @@
 - Feature branch: `STU-116-stu-114-design-slice`
 - Parent epic: STU-114 (Metadata Ingestion and Editor MVP)
 - Architecture dependency: [STU-117](../STU-117/spec.md) (`MetadataLifecycleState`, workflow rules)
-- Related design doc: `docs/features/STU-116/design.md`
+- Related design doc: `docs/features/STU-116/design.md` (includes Mermaid process
+  flowchart and [Figma wireframes](https://www.figma.com/design/Qoi4vgPKWqM7yJv5FCWAiL/STU-116-Metadata-editor-UX))
 - Related validation doc: `docs/features/STU-116/validation.md`
 - Downstream build: STU-122 (ingest + editor implementation)
 
@@ -104,3 +105,4 @@ errors, skipped preview discipline, or UX that fights the domain invariants in
 | ---------- | ------------------------------------------- | ------------------------------- |
 | 2026-04-06 | Initial spec replacing stub after STU-117   | Unblock design/build handoff    |
 | 2026-04-06 | Gate integrity constraint for production API | PR security review              |
+| 2026-04-06 | Link Figma + process flowchart in design doc   | Design completeness           |

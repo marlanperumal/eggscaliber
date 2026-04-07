@@ -39,7 +39,10 @@ gate, not automated product QA.
 - [ ] Open questions for STU-122 are listed in `design.md` (autosave, async
   preview, body mapping).
 - [ ] Links from Linear STU-116 to this spec and `design.md` are present.
-- [ ] Any Figma or diagram links are added to `design.md` when available.
+- [ ] **Figma**: `design.md` links the exploration file; reviewer has opened the
+  page and confirmed **Option A vs B** (or recorded a decision in Linear).
+- [ ] **Flowchart**: Mermaid process flow in `design.md` matches the agreed
+  trusted-boundary story (server-side gates).
 
 ## Roles
 

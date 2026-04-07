@@ -7,7 +7,7 @@
 - Related spec: `docs/features/STU-116/spec.md`
 - Related validation: `docs/features/STU-116/validation.md`
 - Architecture reference: [STU-117 design](../STU-117/design.md), `metadata_domain`
-- Figma: TBD when visual exploration starts
+- Figma: [STU-116 Metadata editor UX](https://www.figma.com/design/Qoi4vgPKWqM7yJv5FCWAiL/STU-116-Metadata-editor-UX)
 
 ## Design summary
 
@@ -60,6 +60,55 @@ stateDiagram-v2
 
 Illegal transitions should surface **inline errors** tied to the action (e.g.
 “Fix blocking issues before preview”) not generic failures.
+
+## End-to-end process flow (flowchart)
+
+The diagram below is the **happy path plus gate failure, discard, and publish**,
+with **server-side gate execution** called out. It complements the state
+machine above.
+
+```mermaid
+flowchart TD
+  subgraph pilot["Pilot"]
+    A([Start]) --> B[Choose source type]
+    B --> C[Provide locator / connect]
+    C --> D[Confirm ingestion descriptor]
+    D --> E[Edit metadata in draft]
+    E --> F[Tap: Run preview]
+    F --> G{Review outcome}
+    G -->|Gate failed| E
+    G -->|Gate passed| H[Read preview summary]
+    H --> I{Next action}
+    I -->|Publish| J([Published — read-only])
+    I -->|Discard preview| K[Confirm discard]
+    K --> E
+  end
+
+  subgraph system["System — trusted boundary"]
+    S1[Ingest + create draft revision]
+    S2[Execute preview gates server-side]
+    S3[submit_for_preview with server-built report]
+    S4[publish]
+  end
+
+  C --> S1
+  S1 --> D
+  F --> S2
+  S2 -->|failed: messages| G
+  S2 -->|passed| S3
+  S3 --> G
+  I --> S4
+  S4 --> J
+```
+
+**Notes**
+
+- **No** `preview` state is shown in the pilot column when gates fail; the UI
+  stays in **draft** with blocking messages (`PreviewGateReport.messages`).
+- **Discard preview** only applies after a **successful** transition to preview;
+  it returns the pilot to **draft** without implying `body` loss.
+- **Access errors** (wrong tenant / unknown revision) are omitted here; they
+  short-circuit to a single “not found or inaccessible” surface per spec.
 
 ## Key flows
 
@@ -138,6 +187,23 @@ Illegal transitions should surface **inline errors** tied to the action (e.g.
   preview” action maps to that trusted execution path, not to the client
   asserting `passed` on its own.
 
+## Figma artifacts
+
+File (team drafts): [STU-116 Metadata editor
+UX](https://www.figma.com/design/Qoi4vgPKWqM7yJv5FCWAiL/STU-116-Metadata-editor-UX)
+
+Page **STU-116 — Metadata editor** contains:
+
+1. **03 — Process flow (visual)** — Box-and-label map aligned with the Mermaid
+   flowchart (pilot vs trusted system; gate failure returns to draft).
+2. **01 — Option A · Stepper wizard** — Horizontal stepper, tenant/context bar,
+   draft table placeholder, **Run preview** / **Save** CTAs, pros/cons caption.
+3. **02 — Option B · Step rail** — Fixed left rail for steps + scrollable
+   workspace, same functional areas with a different layout tradeoff.
+
+These are **low-fidelity wireframes** for direction picking, not final visual
+design. Promote to the product design library when tokens and components exist.
+
 ## Addendum
 
 | Date       | Change                         | Reason                        |
@@ -145,3 +211,4 @@ Illegal transitions should surface **inline errors** tied to the action (e.g.
 | 2026-04-06 | Initial UX design after STU-117 | Align UI story with workflow |
 | 2026-04-06 | Clarify bulk edits, preview summary vs diff, publish provenance | PR review feedback |
 | 2026-04-06 | Document server-side gate trust boundary           | PR security review |
+| 2026-04-06 | Add Mermaid process flowchart + Figma wireframes   | Design completeness |
