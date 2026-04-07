@@ -22,6 +22,10 @@ gate, not automated product QA.
 - [ ] Documented transitions match `InMemoryMetadataWorkflowService` rules:
   preview only after passing gate; publish only from preview; discard preview
   only from preview; published terminal.
+- [ ] **New draft after publish:** “New draft” (or equivalent) creates a **new**
+  `MetadataRevision` with a **new** `revision_id`; it does not reopen or mutate
+  the **published** revision, so `published` stays terminal/immutable in the
+  domain model.
 - [ ] Gate failure path never describes a `preview` UI state when the domain
   remains `draft`.
 
@@ -64,3 +68,4 @@ gate, not automated product QA.
 | Date       | Change                    | Reason              |
 | ---------- | ------------------------- | ------------------- |
 | 2026-04-06 | Initial validation doc    | Replace stub        |
+| 2026-04-07 | Checklist: new draft = new revision | PR review (Gemini) |

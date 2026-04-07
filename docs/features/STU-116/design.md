@@ -28,14 +28,19 @@ free-form document.
 3. **Draft editor** — revision in `draft`: tabular or grouped list of metadata
    entries backed by opaque `body`; supports **multi-row selection** and **bulk
    edits** on the current selection (e.g. set the same label prefix on every
-   selected field, or apply one value down a visible column). Scope is
-   “whatever is selected in the grid,” not a separate abstract “pattern layer,”
-   unless STU-122 adds grouping or regex-based rules.
+   selected field, or apply one value down a visible column). Scope is **only**
+   the pilot’s current **grid selection** or **active column**—not a separate
+   template library, preset layer, or regex engine unless STU-122 explicitly
+   adds one.
 4. **Preview request** — explicit CTA to run validation; show spinner / job
    state if preview is asynchronous in STU-122.
-5. **Preview summary** — when `preview`: read-only snapshot with **gate outcome**
-   banner. If gate failed while still in `draft`, show blocking messages
-   (conceptual mapping to `PreviewGateReport.messages`).
+5. **Preview summary** — when `preview`: **MVP (decided):** prominent **gate
+   outcome** plus a **read-only snapshot** of this revision’s metadata (same
+   `revision_id`, `preview` state). **No structural diff** against other
+   revisions in MVP: opaque `body` makes diff expensive and hard to interpret;
+   defer field-level or revision-to-revision diff only if pilots prove they need
+   it. If gate failed while still in `draft`, show blocking messages (mapping to
+   `PreviewGateReport.messages`).
 6. **Publish / discard** — from `preview`, primary **Publish** and secondary
    **Discard preview** (returns to `draft`). **Published** view is read-only
    success state with link to start a **new draft** from the same instance.
@@ -154,9 +159,9 @@ flowchart TD
 
 - **Before publish**, always show **what dataset instance** and **definition**
   the revision applies to (ids or human names as available).
-- **Preview summary** should call out **compatibility** or **policy** issues in
-  plain language; tie lists of messages to actionable rows where possible (build
-  maps messages to fields in STU-122 when metadata supports it).
+- **Preview summary** (MVP): gate banner plus read-only metadata snapshot; call
+  out **compatibility** or **policy** issues in plain language and tie lists of
+  messages to rows when STU-122 can map gate output to fields.
 - **Published** state: short **“what was published”** recap when the stack can
   supply it (e.g. publish time, initiating user). STU-117’s `MetadataRevision`
   does not yet carry audit fields; STU-122 should persist or join **provenance**
@@ -176,9 +181,9 @@ flowchart TD
 - Autosave vs explicit save; optimistic UI rules.
 - Whether preview runs sync or async; progress UI.
 - Exact mapping from opaque `body` keys to column labels.
-- **Preview “diff”**: `InMemoryMetadataWorkflowService` has no revision diff;
-  with an opaque `body`, define whether pilots see a structural diff, a
-  gate-only summary, or both—and where computation lives (service vs UI).
+- **Optional post-MVP:** revision-to-revision or field-level **structural diff**
+  in preview if research demands it; not required for first ship (see preview
+  summary MVP decision above).
 - **Publish provenance**: actor/timestamp (or equivalent) for the published
   recap; may require model or persistence changes beyond STU-117.
 - **Gate report trust boundary**: STU-122 must run preview validation
@@ -212,3 +217,4 @@ design. Promote to the product design library when tokens and components exist.
 | 2026-04-06 | Clarify bulk edits, preview summary vs diff, publish provenance | PR review feedback |
 | 2026-04-06 | Document server-side gate trust boundary           | PR security review |
 | 2026-04-06 | Add Mermaid process flowchart + Figma wireframes   | Design completeness |
+| 2026-04-07 | MVP preview UX + remove pattern-layer wording        | PR review (Gemini)  |

@@ -74,6 +74,14 @@ errors, skipped preview discipline, or UX that fights the domain invariants in
   able to advance the lifecycle by forging `passed: true`. The domain method
   signature that accepts a report is for **in-process** orchestration and tests
   (STU-117), not an instruction to trust browser-supplied gate results.
+- **Orchestration encapsulation (STU-122):** production services should expose a
+  **single trusted path** (façade or `PreviewGateRunner`-style port) that runs
+  gates and then calls `submit_for_preview` with the resulting report—avoid
+  scattering “build a `PreviewGateReport` in the handler” across routes. Keeping
+  **gate execution** separate from the **workflow mutation** port is deliberate
+  for STU-117 tests and alternative validators; **security** comes from never
+  letting untrusted layers inject reports, not from merging concerns inside the
+  domain package in this slice.
 - **Published** revisions are terminal in the product narrative: no “edit in
   place”; changes fork through a new draft revision (wording for pilots).
 - Field-level body remains **opaque** at the domain layer; UI copy may describe
@@ -106,3 +114,4 @@ errors, skipped preview discipline, or UX that fights the domain invariants in
 | 2026-04-06 | Initial spec replacing stub after STU-117   | Unblock design/build handoff    |
 | 2026-04-06 | Gate integrity constraint for production API | PR security review              |
 | 2026-04-06 | Link Figma + process flowchart in design doc   | Design completeness           |
+| 2026-04-07 | Orchestration encapsulation for gate reports   | PR review (Gemini)            |
